@@ -19,6 +19,7 @@ ul {
     color: white;
     background-color: blue;
     border-radius: 5px;;
+    margin-left: 1px;
 }
 
 .prev-search {
@@ -37,6 +38,21 @@ ul {
 
 .main-column {
     margin: 10px;
+}
+
+.uv-red {
+    background-color: red;
+    padding: 5px;
+}
+
+.uv-yellow {
+    background-color: yellow;
+    padding: 5px;
+}
+
+.uv-green {
+    background-color: green;
+    padding: 5px;
 }
 
 .forecast-box{

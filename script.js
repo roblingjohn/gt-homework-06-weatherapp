@@ -42,7 +42,7 @@ function writePrevEntries() {
     $("#searched-cities").empty();
     for (i = previousEntries.length - 1; i > previousEntries.length - 9 ; i--){
         if (previousEntries[i] === undefined) {
-            console.log("boop");
+            console.log("No more entries");
         }
         else {
         $("#searched-cities").append("<button class='prev-search' data-city='" + previousEntries[i] + "'>" + previousEntries[i] + "</button>")
@@ -65,6 +65,19 @@ function tidyArray() {
         previousEntries.splice(0, 1)
     }
 }
+
+function UVColor() {
+    if (UVIndex < 3) {
+        $("#uv-index").attr("class", "uv-green");
+    }
+    else if (UVIndex > 7) {
+        $("#uv-index").attr("class", "uv-red");
+    }
+    else {
+        $("#uv-index").attr("class", "uv-yellow")
+    }
+}
+
 
 searchEntry = $("#search-bar").val();
 
@@ -92,7 +105,6 @@ function getCityData() {
             lattitude = results.coord.lat;
             // put results in appropriate fields in weather box
             var currentWeather = response.weather[0].main;
-            console.log(response)
             if (currentWeather === "Clear") {
                 var currentWeatherIcon = "fas fa-sun"
             }
@@ -119,7 +131,8 @@ function getCityData() {
             })
         .then(function(response) {
             UVIndex = response.value;
-            $("#uv-index").text("UV index: " + UVIndex);
+            $("#uv-index").text(UVIndex);
+            UVColor();
             // create forecast information
             var forecastURL = "http://api.openweathermap.org/data/2.5/forecast?units=imperial&q=" + cityName + "&appid=" + APIKey;
             $.ajax({
