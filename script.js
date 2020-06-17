@@ -41,7 +41,7 @@ function writePrevEntries() {
             console.log("boop");
         }
         else {
-        $("#searched-cities").append("<p class='prev-search'>" + previousEntries[i] + "</p>")
+        $("#searched-cities").append("<button class='prev-search' data-city='" + previousEntries[i] + "'>" + previousEntries[i] + "</button>")
         }
     }
 };
@@ -53,6 +53,7 @@ var searchEntry = $("#search-bar").val();
 
 // set event from search bar
 function getCityData() {
+    $("#search-bar").val("")
     // get search results from search bar
     // get ajax data from search result
     var APIKey = "83cea6cbcabbb7bef1222d329e94e37c"
@@ -116,6 +117,12 @@ function getCityData() {
 
 
         }
+        $(".prev-search").click(function(event) {
+            event.preventDefault();
+            console.log("the click works")
+            searchEntry = $(this).attr("data-city");
+            getCityData();
+        });
     })
  })
 
@@ -128,14 +135,9 @@ function getCityData() {
 })
 }
 
-$("#search-button").on("click", function() {
+$("#search-button").click(function() {
     event.preventDefault();
     searchEntry = $("#search-bar").val();
     getCityData();
-})
+});
 
-$(".prev-search").on("click", function(){
-    event.preventDefault();
-    searchEntry = $(this).text();
-    getCityData();
-})

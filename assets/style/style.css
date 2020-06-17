@@ -5,6 +5,9 @@ header {
     padding: 10px;
 }
 
+ul {
+    list-style-type: none;
+}
 
 .search-col {
     background-color: lightgray;
@@ -15,6 +18,7 @@ header {
 
 
 .prev-search {
+    text-align: left;
     background-color: white;
     padding: 10px;
     border-style: solid;
@@ -22,6 +26,8 @@ header {
     border-width: 1px;
     margin-top: 0px;
     margin-bottom: 0px;
+    margin-left: -40px;
+    width: 100%;
 }
 
 .main-column {
