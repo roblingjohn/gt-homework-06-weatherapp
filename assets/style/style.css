@@ -5,6 +5,9 @@ header {
     padding: 10px;
 }
 
+ul {
+    list-style-type: none;
+}
 
 .search-col {
     background-color: lightgray;
@@ -15,11 +18,16 @@ header {
 
 
 .prev-search {
+    text-align: left;
     background-color: white;
     padding: 10px;
     border-style: solid;
     border-color: grey;
     border-width: 1px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    margin-left: -40px;
+    width: 100%;
 }
 
 .main-column {
@@ -38,5 +46,14 @@ header {
 }
 
 #search-bar {
+    margin-bottom: 10px;
+}
+
+#weather-box {
+    border-style: solid;
+    border-color: gray;
+    border-width: 1px;
+    padding: 10px;
+    margin-top: 10px;
     margin-bottom: 10px;
 }
