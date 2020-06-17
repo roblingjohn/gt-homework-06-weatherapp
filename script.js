@@ -44,10 +44,23 @@ function writePrevEntries() {
         $("#searched-cities").append("<button class='prev-search' data-city='" + previousEntries[i] + "'>" + previousEntries[i] + "</button>")
         }
     }
+    tidyArray();
 };
 
+tidyArray();
 writePrevEntries();
 getCityData();
+
+function tidyArray() {
+    var uniqueArray = [];
+        $.each(previousEntries, function(i, el){
+        if($.inArray(el, uniqueArray) === -1) uniqueArray.push(el);
+    });
+    previousEntries = uniqueArray
+    if (previousEntries.length > 7) {
+        previousEntries.splice(0, 1)
+    }
+}
 
 var searchEntry = $("#search-bar").val();
 
@@ -81,7 +94,6 @@ function getCityData() {
             $("#wind-speed").text("WInd speed: " + windspeed + " MPH")
             previousEntries.push(cityName);
             localStorage.setItem("cities", JSON.stringify(previousEntries))
-            writePrevEntries();
             var UVIURL = "http://api.openweathermap.org/data/2.5/uvi?appid=" + APIKey + "&lat=" + lattitude + "&lon=" + longitude;
             $.ajax({
                 url: UVIURL,
@@ -139,5 +151,7 @@ $("#search-button").click(function() {
     event.preventDefault();
     searchEntry = $("#search-bar").val();
     getCityData();
+    tidyArray();
+    writePrevEntries();
 });
 
