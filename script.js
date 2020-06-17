@@ -15,8 +15,12 @@
         var previousEntries = JSON.parse(localStorage.getItem("cities"));
         if (previousEntries === null) {
             previousEntries = []
+            var searchEntry = ""
         }
-        var searchEntry = previousEntries[previousEntries.length - 1];
+        else {
+            var searchEntry = previousEntries[previousEntries.length - 1];
+        }
+
 
         var forecastAPI = ""
 
@@ -62,7 +66,7 @@ function tidyArray() {
     }
 }
 
-var searchEntry = $("#search-bar").val();
+searchEntry = $("#search-bar").val();
 
 // set event from search bar
 function getCityData() {
@@ -87,8 +91,22 @@ function getCityData() {
             longitude = results.coord.lon;
             lattitude = results.coord.lat;
             // put results in appropriate fields in weather box
-
+            var currentWeather = response.weather[0].main;
+            console.log(response)
+            if (currentWeather === "Clear") {
+                var currentWeatherIcon = "fas fa-sun"
+            }
+            else if (currentWeather === "Clouds") {
+                var currentWeatherIcon = "fas fa-cloud-sun"
+            }
+            else if (currentWeather === "Rain") {
+                var currentWeatherIcon = "fas fa-cloud-rain"
+            }
+            else {
+                var currentWeatherIcon = currentWeather
+            }
             $("#city-name").text(cityName + "  (" + moment().format('L') + ")");
+            $("#weather-icon").attr("class", currentWeatherIcon)
             $("#temperature").text("Temperature: " + temperature + "°F")
             $("#humidity").text("Humidity: " + humidity + "%")
             $("#wind-speed").text("WInd speed: " + windspeed + " MPH")
@@ -117,9 +135,20 @@ function getCityData() {
             var forecastEntry = $("<div class ='col-md forecast-box'>")
             var forecastDate = moment(moment().add('days', i)).format("MM/DD/YYYY");
             forecastEntry.append("<h5>" + forecastDate + "</h5>");
-            var forecastWeatherIcon = forecastAPI.list[i].weather[0].main;
-            ;
-            forecastEntry.append("<p>" + forecastWeatherIcon + "</p>");
+            var forecastWeather = forecastAPI.list[i].weather[0].main;
+            if (forecastWeather === "Clear") {
+                var forecastWeatherIcon = "<i class='fas fa-sun'></i>"
+            }
+            else if (forecastWeather === "Clouds") {
+                var forecastWeatherIcon = "<i class='fas fa-cloud-sun'></i>"
+            }
+            else if (forecastWeather === "Rain") {
+                var forecastWeatherIcon = "<i class='fas fa-cloud-rain'></i>"
+            }
+            else {
+                var forecastWeatherIcon = forecastWeather
+            }
+            forecastEntry.append(forecastWeatherIcon);
             var forecastTemp = forecastAPI.list[i].main.temp;
             forecastTemp = Math.floor(forecastTemp);
             forecastEntry.append("<p>Temp: " + forecastTemp + "°F</p>");
@@ -131,7 +160,6 @@ function getCityData() {
         }
         $(".prev-search").click(function(event) {
             event.preventDefault();
-            console.log("the click works")
             searchEntry = $(this).attr("data-city");
             getCityData();
         });
@@ -147,7 +175,7 @@ function getCityData() {
 })
 }
 
-$("#search-button").click(function() {
+$(".search-button").click(function() {
     event.preventDefault();
     searchEntry = $("#search-bar").val();
     getCityData();
