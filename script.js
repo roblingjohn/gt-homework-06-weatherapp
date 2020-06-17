@@ -15,8 +15,12 @@
         var previousEntries = JSON.parse(localStorage.getItem("cities"));
         if (previousEntries === null) {
             previousEntries = []
+            var searchEntry = ""
         }
-        var searchEntry = previousEntries[previousEntries.length - 1];
+        else {
+            var searchEntry = previousEntries[previousEntries.length - 1];
+        }
+
 
         var forecastAPI = ""
 
@@ -38,7 +42,7 @@ function writePrevEntries() {
     $("#searched-cities").empty();
     for (i = previousEntries.length - 1; i > previousEntries.length - 9 ; i--){
         if (previousEntries[i] === undefined) {
-            console.log("boop");
+            console.log("No more entries");
         }
         else {
         $("#searched-cities").append("<button class='prev-search' data-city='" + previousEntries[i] + "'>" + previousEntries[i] + "</button>")
@@ -62,7 +66,20 @@ function tidyArray() {
     }
 }
 
-var searchEntry = $("#search-bar").val();
+function UVColor() {
+    if (UVIndex < 3) {
+        $("#uv-index").attr("class", "uv-green");
+    }
+    else if (UVIndex > 7) {
+        $("#uv-index").attr("class", "uv-red");
+    }
+    else {
+        $("#uv-index").attr("class", "uv-yellow")
+    }
+}
+
+
+searchEntry = $("#search-bar").val();
 
 // set event from search bar
 function getCityData() {
@@ -87,8 +104,21 @@ function getCityData() {
             longitude = results.coord.lon;
             lattitude = results.coord.lat;
             // put results in appropriate fields in weather box
-
+            var currentWeather = response.weather[0].main;
+            if (currentWeather === "Clear") {
+                var currentWeatherIcon = "fas fa-sun"
+            }
+            else if (currentWeather === "Clouds") {
+                var currentWeatherIcon = "fas fa-cloud-sun"
+            }
+            else if (currentWeather === "Rain") {
+                var currentWeatherIcon = "fas fa-cloud-rain"
+            }
+            else {
+                var currentWeatherIcon = currentWeather
+            }
             $("#city-name").text(cityName + "  (" + moment().format('L') + ")");
+            $("#weather-icon").attr("class", currentWeatherIcon)
             $("#temperature").text("Temperature: " + temperature + "°F")
             $("#humidity").text("Humidity: " + humidity + "%")
             $("#wind-speed").text("WInd speed: " + windspeed + " MPH")
@@ -101,7 +131,8 @@ function getCityData() {
             })
         .then(function(response) {
             UVIndex = response.value;
-            $("#uv-index").text("UV index: " + UVIndex);
+            $("#uv-index").text(UVIndex);
+            UVColor();
             // create forecast information
             var forecastURL = "http://api.openweathermap.org/data/2.5/forecast?units=imperial&q=" + cityName + "&appid=" + APIKey;
             $.ajax({
@@ -117,9 +148,20 @@ function getCityData() {
             var forecastEntry = $("<div class ='col-md forecast-box'>")
             var forecastDate = moment(moment().add('days', i)).format("MM/DD/YYYY");
             forecastEntry.append("<h5>" + forecastDate + "</h5>");
-            var forecastWeatherIcon = forecastAPI.list[i].weather[0].main;
-            ;
-            forecastEntry.append("<p>" + forecastWeatherIcon + "</p>");
+            var forecastWeather = forecastAPI.list[i].weather[0].main;
+            if (forecastWeather === "Clear") {
+                var forecastWeatherIcon = "<i class='fas fa-sun'></i>"
+            }
+            else if (forecastWeather === "Clouds") {
+                var forecastWeatherIcon = "<i class='fas fa-cloud-sun'></i>"
+            }
+            else if (forecastWeather === "Rain") {
+                var forecastWeatherIcon = "<i class='fas fa-cloud-rain'></i>"
+            }
+            else {
+                var forecastWeatherIcon = forecastWeather
+            }
+            forecastEntry.append(forecastWeatherIcon);
             var forecastTemp = forecastAPI.list[i].main.temp;
             forecastTemp = Math.floor(forecastTemp);
             forecastEntry.append("<p>Temp: " + forecastTemp + "°F</p>");
@@ -131,7 +173,6 @@ function getCityData() {
         }
         $(".prev-search").click(function(event) {
             event.preventDefault();
-            console.log("the click works")
             searchEntry = $(this).attr("data-city");
             getCityData();
         });
@@ -147,7 +188,7 @@ function getCityData() {
 })
 }
 
-$("#search-button").click(function() {
+$(".search-button").click(function() {
     event.preventDefault();
     searchEntry = $("#search-bar").val();
     getCityData();

@@ -15,7 +15,12 @@ ul {
     min-height: 600px;
 }
 
-
+.search-button {
+    color: white;
+    background-color: blue;
+    border-radius: 5px;;
+    margin-left: 1px;
+}
 
 .prev-search {
     text-align: left;
@@ -28,17 +33,34 @@ ul {
     margin-bottom: 0px;
     margin-left: -40px;
     width: 100%;
+    border-radius: 5px;;
 }
 
 .main-column {
     margin: 10px;
 }
 
+.uv-red {
+    background-color: red;
+    padding: 5px;
+}
+
+.uv-yellow {
+    background-color: yellow;
+    padding: 5px;
+}
+
+.uv-green {
+    background-color: green;
+    padding: 5px;
+}
+
 .forecast-box{
     background-color: blue;
     color: white;
     margin: 8px;
-    padding-top: 5px;
+    padding-top: 10px;
+    border-radius: 5px;;
 }
 
 .hide {
@@ -47,12 +69,14 @@ ul {
 
 #search-bar {
     margin-bottom: 10px;
+    border-radius: 5px;;
 }
 
 #weather-box {
     border-style: solid;
     border-color: gray;
     border-width: 1px;
+    border-radius: 5px;;
     padding: 10px;
     margin-top: 10px;
     margin-bottom: 10px;
